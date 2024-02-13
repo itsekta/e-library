@@ -43,19 +43,29 @@ export default function BookCardUI() {
         <div className="flex gap-2 flex-wrap ">
           {books && books.length > 0 ? (
             books.map((book) => (
-              <div className="flex flex-col items-center bg-stone-100">
-                <div key={book.work.key}>
-                  <img
-                    src={`https://covers.openlibrary.org/b/id/${book.work.cover_id}-M.jpg`}
-                    alt={book.work.title}
-                    className="w-200px h-200px mb-2 rounded-md"
-                  />
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold">{book.work.title}</h3>
-                    <p className="text-sm text-gray-600">
+              <div className=" bg-white rounded  p-4">
+                <div
+                  key={book.work.key}
+                  className=" flex flex-col items-center"
+                >
+                  <div className="w-50 h-50 mb-2">
+                    <img
+                      src={`https://covers.openlibrary.org/b/id/${book.work.cover_id}-M.jpg`}
+                      alt={book.work.title}
+                      className="rounded-md"
+                    />
+                  </div>
+                  <div
+                    className="flex flex-col text-wrap text-black"
+                    style={{ width: "200px" }}
+                  >
+                    <h3 className="text-lg font-semibold text-wrap">
+                      {book.work.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 text-wrap">
                       Author: {book.work.author_names.join(", ")}
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 text-wrap">
                       Published Year: {book.work.first_publish_year}
                     </p>
                     <button
