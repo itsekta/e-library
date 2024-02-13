@@ -22,6 +22,11 @@ export default function BookCardUI() {
       setIsLoading(false); // Set loading state to false if there's an error
     }
   }
+  const toggleBookStatus = (index) => {
+    const updatedBooks = [...books];
+    updatedBooks[index].logged_edition = !updatedBooks[index].logged_edition;
+    setBooks(updatedBooks);
+  };
 
   useEffect(() => {
     if (isInitialMount.current) {
@@ -41,13 +46,11 @@ export default function BookCardUI() {
         </div>
       ) : (
         <div className="flex gap-2 flex-wrap ">
-          {books && books.length > 0 ? (
-            books.map((book) => (
-              <div className=" bg-white rounded  p-4">
-                <div
-                  key={book.work.key}
-                  className=" flex flex-col items-center"
-                >
+          {books
+            .filter((book) => book.work.cover_id) // Filter out books without cover_id
+            .map((book, index) => (
+              <div className=" bg-white rounded p-4" key={book.work.key}>
+                <div className=" flex flex-col items-center">
                   <div className="w-50 h-50 mb-2">
                     <img
                       src={`https://covers.openlibrary.org/b/id/${book.work.cover_id}-M.jpg`}
@@ -69,6 +72,7 @@ export default function BookCardUI() {
                       Published Year: {book.work.first_publish_year}
                     </p>
                     <button
+                      onClick={() => toggleBookStatus(index)}
                       className={`mt-2 py-1 px-3 rounded ${
                         book.logged_edition
                           ? "bg-green-500 text-white"
@@ -80,10 +84,7 @@ export default function BookCardUI() {
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div>No books found</div>
-          )}
+            ))}
         </div>
       )}
     </div>
