@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Spinner } from "@nextui-org/react";
+import { Spinner, Button } from "@nextui-org/react";
 
 export default function BookCardUI() {
   const [books, setBooks] = useState([]);
@@ -16,10 +16,10 @@ export default function BookCardUI() {
       }
       const data = await response.json();
       setBooks(data.reading_log_entries);
-      setIsLoading(false); // Set loading state to false after data is fetched
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching books:", error);
-      setIsLoading(false); // Set loading state to false if there's an error
+      setIsLoading(false);
     }
   }
   const toggleBookStatus = (index) => {
@@ -32,7 +32,7 @@ export default function BookCardUI() {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      setIsLoading(true); // Set loading state to true before fetching data
+      setIsLoading(true);
       fetchBooks();
     }
   }, []);
@@ -46,8 +46,9 @@ export default function BookCardUI() {
         </div>
       ) : (
         <div className="flex gap-2 flex-wrap ">
+          {/* {books.filter((book) => book.work.cover_id).length} */}
           {books
-            .filter((book) => book.work.cover_id) // Filter out books without cover_id
+            .filter((book) => book.work.cover_id)
             .map((book, index) => (
               <div className=" bg-white rounded p-4" key={book.work.key}>
                 <div className=" flex flex-col items-center">
@@ -71,16 +72,14 @@ export default function BookCardUI() {
                     <p className="text-sm text-gray-600 text-wrap">
                       Published Year: {book.work.first_publish_year}
                     </p>
-                    <button
+                    <Button
+                      radius="sm"
                       onClick={() => toggleBookStatus(index)}
-                      className={`mt-2 py-1 px-3 rounded ${
-                        book.logged_edition
-                          ? "bg-green-500 text-white"
-                          : "border border-gray-400 text-gray-600"
-                      }`}
+                      color={book.logged_edition ? "success" : "default"}
                     >
+                      {" "}
                       {book.logged_edition ? "Read" : "Unread"}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
